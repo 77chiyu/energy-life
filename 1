@@ -1,0 +1,338 @@
+# To run this code you need to install the following dependencies:
+# pip install google-genai
+
+import os
+from google import genai
+from google.genai import types
+
+
+def generate():
+    client = genai.Client(
+        api_key=os.environ.get("GEMINI_API_KEY"),
+    )
+
+    model = "gemini-3-flash-preview"
+    contents = [
+        types.Content(
+            role="user",
+            parts=[
+                types.Part.from_text(text="""https://www.popdaily.com.tw/acg/1651692?amp=1
+參考上面的網站，裡面的遊戲
+我想要將它改編成 目標為洗澡 洗頭 洗身體 打工 追劇 看電影  逛市集 看展覽 找朋友玩 
+可以怎麼改編?"""),
+            ],
+        ),
+        types.Content(
+            role="model",
+            parts=[
+                types.Part.from_text(text="""**Analyzing PopDaily Article**
+
+I'm currently focused on dissecting a PopDaily article. Based on the URL and the site's usual content, I'm expecting this will center around games or related activities. My goal is to pinpoint the exact game or activity. I'll need to use this to ground any further exploration.
+
+
+**Refining Gameplay Concepts**
+
+I'm now iterating on the game mechanics. I've landed on a few concepts. One is a classic Bingo grid that merges self-care and social activities. The other is a leveled system categorizing activities. I'm focusing on \"Self-Care & Social\" Bingo, its structure and elements.
+
+
+**Mapping Out Categories**
+
+I'm now diving deeper into category creation for the lifestyle map structure. I've categorized activities into \"The Refresh Ritual,\" \"The Hustle,\" \"Digital Escape,\" and \"Outing/Culture.\" I'm refining the activity list and considering how each fits the larger vision. I'm focusing on \"Solitude\" vs \"Social\" distinction in the journey style weekly map.
+
+
+"""),
+                types.Part.from_text(text="""這篇 PopDaily 的文章介紹的是一種**「生活重啟/自我提升」的遊戲化清單**（類似 Bingo 或成就解鎖）。這類遊戲的核心在於將日常瑣事轉化為「任務」，完成後獲得成就感。
+
+根據你提供的目標（洗澡、洗頭、打工、追劇、看展覽等），我為你設計了三種不同風格的改編方案，你可以根據你想要的「遊戲難度」來選擇：
+
+---
+
+### 方案一：【生活儀式感 Bingo】（適合發限動、每日打卡）
+這是最接近原網頁的視覺形式。將你的目標分為「內在充電」與「外在探索」。
+
+*   **遊戲規則：** 達成連線（橫、豎、斜）即可獎勵自己一杯飲料或一個小禮物。
+*   **格子配置 (3x3 範例)：**
+    *   [左上] **沈浸式洗澡**（洗頭+洗身體+護髮/去角質）
+    *   [中上] **打工戰士**（完成今日工作任務）
+    *   [右上] **市集尋寶**（去逛文創或二手市集）
+    *   [左中] **影視馬拉松**（追劇 2 集以上）
+    *   [正中] **靈魂放空**（今天的自由時間）
+    *   [右中] **大銀幕時光**（看一場完整電影）
+    *   [左下] **藝文薰陶**（去看一個感興趣的展覽）
+    *   [中下] **社交能量**（約朋友出來玩/聚餐）
+    *   [右下] **精緻清潔**（這格專門留給「洗頭」，因為洗頭最累！）
+
+---
+
+### 方案二：【RPG 屬性養成計畫】（適合想要「打怪升級」的人）
+將你的目標轉化為角色的「能力值」，讓枯燥的事情變好玩。
+
+*   **角色能力：**
+    1.  **魅力值 (CHA)：** 洗澡、洗頭、洗身體（完成一套精緻清潔，魅力+10）
+    2.  **財力值 (GOLD)：** 打工（每工作一小時，經驗值+20）
+    3.  **感性值 (SEN)：** 追劇、看電影、看展覽（獲得情緒共鳴，感性+15）
+    4.  **社交力 (SOC)：** 逛市集、找朋友玩（擴展人脈與見聞，社交+15）
+
+*   **今日副本任務：**
+    *   **【副本：洗頭大作戰】**：難度 ★★（洗完頭後，角色獲得「清爽 Buff」，心情愉悅度提升）。
+    *   **【副本：現實修煉】**：難度 ★★★★（打工。完成後可解鎖「消費金幣」權利）。
+    *   **【副本：城市漫遊】**：難度 ★★★（逛市集+看展覽。連動任務可獲得「文藝青年」稱號）。
+
+---
+
+### 方案三：【能量平衡卡牌】（適合分配時間、調節心情）
+將任務分為「消耗能量」與「補充能量」，確保你一天下來不會太累。
+
+*   **藍卡（消耗能量，但有產出）：**
+    *   **[打工]**：消耗 50% 體力，產出金錢。
+    *   **[洗頭]**：消耗 20% 體力，換取乾爽。
+    *   **[找朋友玩]**：消耗 30% 社交能量，換取快樂。
+
+*   **紅卡（補充能量，修復身心）：**
+    *   **[追劇/看電影]**：修復 40% 心靈能量。
+    *   **[洗身體/泡澡]**：修復 20% 體力。
+    *   **[逛市集/看展覽]**：激發靈感，補充 30% 精神能量。
+
+*   **遊玩方式：** 每天早上抽 2 張藍卡（必須做的事）+ 2 張紅卡（獎勵自己的事），平衡生活節奏。
+
+---
+
+### 給你的改編小建議：
+
+1.  **細分「洗澡」的儀式感：**
+    原網頁強調「氛圍感」。你可以把「洗澡、洗頭、洗身體」改編成 **「浴室 SPA 三部曲」**。洗澡時放音樂、點香氛，把洗頭當作一種按摩，這樣這件事就不再是累人的家務，而是遊戲裡的「回血噴泉」。
+
+2.  **將「打工」與「看展」掛鉤：**
+    你可以設定一個遊戲劇情：「今天的打工是為了賺取這週末看展覽/逛市集的門票與零用錢。」這樣打工時會更有目標感。
+
+3.  **視覺化你的進度：**
+    你可以學 PopDaily 的風格，用手機內建的「備忘錄」畫簡單的格子，或者用 **Notion** 製作一個可愛的進度條，完成一項就點擊勾選，看著進度條變滿非常有成就感！
+
+你想先從哪一種形式開始設計你的清單呢？我可以幫你細化具體的格子內容！"""),
+            ],
+        ),
+        types.Content(
+            role="user",
+            parts=[
+                types.Part.from_text(text="""好 製作看看 不管做甚麼都會消耗能量 或是增加能量 這樣試試"""),
+            ],
+        ),
+        types.Content(
+            role="model",
+            parts=[
+                types.Part.from_text(text="""**Investigating PopDaily's Source**
+
+I'm now diving deep into the PopDaily article to grasp the original game's visual style and fundamental mechanics, hoping to get a clear picture of its core concepts. This foundational understanding is crucial before I can start designing anything, it's the bedrock.
+
+
+**Identifying the Target Article**
+
+I've successfully pinpointed the target as a PopDaily article. It's about \"Peeps,\" a popular social game centered around a companion-like feel. I'm focusing on the key features of the game, it seems to be related to social interactions.
+
+
+"""),
+                types.Part.from_text(text="""這是一個非常棒的構思！我們將這個遊戲定調為 **「能量天秤：生活經營 RPG」**。
+
+在現實生活中，我們每天的體力（HP）和心靈能量（MP）是有限的。這個改編版本將幫助你「視覺化」這些能量的消長，讓原本覺得累的事情變得有目標，讓放鬆的事情變得更有儀式感。
+
+---
+
+### 🎮 遊戲核心規則：能量值系統
+
+*   **⚡ 體力值 (Stamina)：** 影響你身體的行動力。
+*   **✨ 靈魂值 (Soul)：** 影響你的心情、創造力與社交渴望。
+*   **🪙 金幣 (Coins)：** 透過「打工」獲得，用來開啟「高階娛樂」副本。
+
+---
+
+### 📋 任務清單與能量消長表
+
+我將你的目標重新分類為「消耗類」與「補充類」，並設定了對應的點數：
+
+#### 1. 【日常維護任務】— 雖然累，但能獲得「清爽 Buff」
+*   🧼 **洗身體**
+    *   消耗：⚡ -10 / 增加：✨ +10
+    *   *獎勵：獲得「乾淨氣味」狀態，接下來 1 小時心情小幅提升。*
+*   🚿 **洗頭 (大任務)**
+    *   消耗：⚡ -25 / 增加：✨ +15
+    *   *註：這是最耗體力的日常，完成後可在地圖上解鎖「蓬鬆秀髮」成就。*
+*   🛀 **全套洗澡 (洗頭+洗身+護髮)**
+    *   消耗：⚡ -40 / 增加：✨ +30
+    *   *特效：觸發「深度睡眠」機率提升，隔天體力恢復速度 x1.5。*
+
+#### 2. 【資源獲取任務】— 換取生存資源
+*   💼 **打工 (副本挑戰)**
+    *   消耗：⚡ -60 / ✨ -20
+    *   獲得：🪙 +大量金幣 / 經驗值 +50
+    *   *備註：打工最耗能，建議完成後立刻接續一個「追劇」任務來補血。*
+
+#### 3. 【心靈充電任務】— 低體力消耗，高靈魂回補
+*   📺 **追劇 (小品回血)**
+    *   消耗：⚡ -5 / 增加：✨ +20
+    *   *備註：適合體力見底時使用。*
+*   🎬 **看電影 (深度沉浸)**
+    *   消耗：⚡ -10 / 增加：✨ +40
+    *   *備註：需消耗金幣或時間門票。*
+
+#### 4. 【外在探索任務】— 高體力消耗，但能獲得大量靈感
+*   🏘️ **逛市集 / 看展覽**
+    *   消耗：⚡ -40 / 增加：✨ +50
+    *   *隨機事件：可能遇到「隱藏小物」或「審美升級」。*
+*   👯 **找朋友玩 (社交本)**
+    *   消耗：⚡ -30 / ✨ 增減取決於朋友類型 (互動回饋 +40)
+    *   *特效：獲得「不孤單」Buff，降低未來一週的負面情緒機率。*
+
+---
+
+### 🛠️ 怎麼玩？（遊戲化操作）
+
+#### 第一步：建立你的「今日狀態條」
+每天早上醒來，設定體力 100 / 靈魂 100。
+
+#### 第二步：排列任務順序 (Combo 技)
+你可以利用「任務組合」來最大化你的能量獲取。例如：
+*   **【打工人套餐】**：打工 (⚡-60) ➔ 追劇 (✨+20) ➔ 洗澡 (⚡-40) ➔ 睡覺。
+*   **【文青充電日】**：看展覽 (✨+50) ➔ 找朋友吃飯 (✨+40) ➔ 全套洗澡 (✨+30)。
+
+#### 第三步：視覺化紀錄 (參考 PopDaily 風格)
+1.  **拍照打卡：** 學《Peeps》遊戲，洗完頭拍一張「吹乾的頭髮」、逛市集拍一張「最喜歡的小物」、追劇拍一張「電視畫面」。
+2.  **能量加減法：** 在照片旁邊打上：`Energy: -20, Soul: +40`。
+3.  **成就達成：** 
+    *   若一週內洗頭 7 次：獲得稱號 **【清爽王者】**。
+    *   若看完 3 場展覽：獲得稱號 **【靈魂收藏家】**。
+
+---
+
+### 💡 改編小撇步：
+如果你覺得有些事情太累（例如洗頭），可以在遊戲裡設定 **「外掛裝備」**：
+*   **香氛蠟燭：** 洗澡時使用，體力消耗減半。
+*   **好喝的飲料：** 逛市集時攜帶，體力消耗減半。
+
+這樣改編後，原本覺得「喔又要洗頭了好麻煩」的心情，會變成「我現在體力還有 30，洗個頭剛好可以把體力耗完去睡覺，換取明天的靈魂值 +30」，是不是更有動力了呢？"""),
+            ],
+        ),
+        types.Content(
+            role="user",
+            parts=[
+                types.Part.from_text(text="""好 製作看看 越好玩越好 """),
+            ],
+        ),
+        types.Content(
+            role="model",
+            parts=[
+                types.Part.from_text(text="""**Exploring Gamification Mechanics**
+
+I'm currently delving into the world of gamified habit trackers and role-playing systems. I'm focusing on \"buffs,\" \"debuffs,\" and skill trees to find mechanics that can be adapted. My aim is to extract the core ideas that create engaging interactions.
+
+
+**Developing Gamified List Ideas**
+
+I'm now focusing on developing gamified list concepts. I've presented the user with an RPG-inspired approach and an energy-based concept, and both of those directions have been received well. I'm now exploring the framework for a PopDaily-inspired list, with considerations for its aesthetic and game-like elements.
+
+
+"""),
+                types.Part.from_text(text="""這個改編版我們將它命名為 **《人生玩家：能量平衡補完計畫》**。
+
+既然你想要「越好玩越好」，我們就引入更硬核的遊戲機制：**「Buff 增益系統」**、**「DEBUFF 負面狀態」**以及**「隨機掉落獎勵」**。這不再只是清單，而是一個完整的個人經營模擬遊戲！
+
+---
+
+### 🎭 角色屬性面板
+*   **⚡ 體力 (HP/Stamina)：** 決定你今天能跑多少圖（逛街、打工）。
+*   **✨ 靈魂靈感 (MP/San)：** 決定你的心情與創造力。
+*   **🪙 課金幣 (Gold)：** 靠打工賺取，用來購買現實生活中的「獎勵」。
+
+---
+
+### 📋 任務副本清單 (能量增減表)
+
+#### 【等級 A：社交與探索副本】(高能消耗，高驚喜回饋)
+1.  **👯 找朋友玩（團體本）**
+    *   **代價：** ⚡ -30 / ✨ -20 (社交恐懼者加倍)
+    *   **獲得：** ✨ +60 / 🪙 -? (看你花多少)
+    *   **隨機掉落：** 獲得「八卦情報」或「下次聚會門票」。
+2.  **🎨 看展覽 / 逛市集（靈感本）**
+    *   **代價：** ⚡ -40 (走路很累)
+    *   **獲得：** ✨ +70
+    *   **特殊效果：** 獲得 **[文藝氣息] Buff**：接下來 24 小時內，發限動的質感提升 20%。
+
+#### 【等級 B：現實生存副本】(枯燥但必須)
+3.  **💼 打工（搬磚日常）**
+    *   **代價：** ⚡ -70 / ✨ -30
+    *   **獲得：** 🪙 +$$$ / 經驗值 +100
+    *   **DEBUFF 預警：** 若連續打工 3 天，會觸發 **[眼神死] 狀態**，必須強制進行「追劇」任務來解除。
+
+#### 【等級 C：個人護理副本】(浴室裡的儀式)
+4.  **🚿 洗頭 + 洗身體（大掃除）**
+    *   **代價：** ⚡ -20 (吹頭髮最累)
+    *   **獲得：** ✨ +15 / ⚡ +10 (清爽感)
+    *   **特殊效果：** 獲得 **[蓬鬆神采] Buff**：魅力值 +10。
+5.  **🛀 沉浸式洗澡（SPA 模式）**
+    *   **代價：** ⚡ -10 / 增加：✨ +40
+    *   **觸發條件：** 搭配香氛、音樂。
+
+#### 【等級 D：精神休眠副本】(低能耗回血)
+6.  **📺 追劇 / 看電影（躺平模式）**
+    *   **代價：** ⚡ -5 / ✨ +20 (電影長度 ✨+40)
+    *   **獲得：** ✨ 大量回補。
+    *   **注意：** 若追劇超過凌晨 2 點，會觸發 **[熊貓眼] DEBUFF**，隔天體力上限減半。
+
+---
+
+### 🎲 進階玩法：隨機掉落系統 (Loot Box)
+
+為了讓遊戲更好玩，每當你完成 **3 個任務**，可以幫自己抽一次「盲盒獎勵」：
+*   **1-3 點：** 普通獎勵（喝一瓶喜歡的飲料）。
+*   **4-5 點：** 稀有獎勵（明天早上可以賴床 30 分鐘）。
+*   **6 點：** **傳說級掉落！**（今天可以買一個心儀已久的小禮物，打工賺的錢合法花掉）。
+
+---
+
+### 📸 PopDaily 風格的紀錄法 (打卡模板)
+
+你可以用手機內建的照片編輯功能，在照片上加上這些可愛的「狀態標籤」：
+
+*   **逛市集照：** `Quest: 逛市集 | Stamina -40 | Inspiration +50 (Status: Inspired! 💡)`
+*   **洗完頭後的自拍：** `Quest: 洗頭成功 | Charisma +10 | (Status: Fluffy hair ☁️)`
+*   **打工累攤照：** `Quest: 搬磚中 | Energy: 1% | Need: 🎬 Movie Recharge!`
+
+---
+
+### 💡 遊戲平衡小叮嚀：
+*   **體力見紅（低於 10%）：** 禁止再接「打工」或「找朋友」任務，強制執行「追劇」或「洗澡睡覺」。
+*   **靈魂乾涸（✨ 太低）：** 就算體力滿格，你也只是個 NPC。快去看電影或看展覽補魔！
+
+這套系統讓你把「洗頭」這種瑣事，看成是為了獲得「魅力 Buff」的戰鬥；把「打工」看成是為了買「電影票獎勵」的刷錢副本。你要不要試著排排看你**明天的「副本攻略順序」**？我可以幫你算算能量平衡喔！"""),
+            ],
+        ),
+        types.Content(
+            role="user",
+            parts=[
+                types.Part.from_text(text="""INSERT_INPUT_HERE"""),
+            ],
+        ),
+    ]
+    tools = [
+        types.Tool(url_context=types.UrlContext()),
+        types.Tool(googleSearch=types.GoogleSearch(
+        )),
+    ]
+    generate_content_config = types.GenerateContentConfig(
+        thinking_config=types.ThinkingConfig(
+            thinking_level="HIGH",
+        ),
+        tools=tools,
+    )
+
+    for chunk in client.models.generate_content_stream(
+        model=model,
+        contents=contents,
+        config=generate_content_config,
+    ):
+        if text := chunk.text:
+            print(text, end="")
+
+if __name__ == "__main__":
+    generate()
+
+
